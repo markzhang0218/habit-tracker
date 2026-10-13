@@ -3,10 +3,10 @@
 const STORAGE_KEY = 'habit-tracker:v1';
 
 const CATEGORIES = {
-  health: { name: '健康', color: '#22c55e' },
-  study: { name: '学习', color: '#3b82f6' },
-  work: { name: '工作', color: '#f59e0b' },
-  life: { name: '生活', color: '#a855f7' }
+  health: { name: '健康', color: '#34d399' },
+  study: { name: '学习', color: '#60a5fa' },
+  work: { name: '工作', color: '#fbbf24' },
+  life: { name: '生活', color: '#c084fc' }
 };
 
 // ---------- 纯函数（便于 Node 测试） ----------
@@ -144,14 +144,29 @@ if (typeof document !== 'undefined') {
   function defaultState() {
     const now = new Date().toISOString();
     return {
-      version: 1,
+      version: 2,
       habits: [
         { id: uid(), name: '喝水', category: 'health', createdAt: now },
+        { id: uid(), name: '运动半小时', category: 'health', createdAt: now },
         { id: uid(), name: '阅读30分钟', category: 'study', createdAt: now },
         { id: uid(), name: '早睡', category: 'life', createdAt: now }
       ],
       records: {}
     };
+  }
+
+  function migrate(state) {
+    let changed = false;
+    const version = state.version || 1;
+    if (version < 2) {
+      const hasExercise = state.habits.some(function (h) { return h.name === '运动半小时'; });
+      if (!hasExercise) {
+        state.habits.push({ id: uid(), name: '运动半小时', category: 'health', createdAt: new Date().toISOString() });
+      }
+      state.version = 2;
+      changed = true;
+    }
+    return changed;
   }
 
   function loadState() {
@@ -160,6 +175,7 @@ if (typeof document !== 'undefined') {
       if (raw) {
         const parsed = JSON.parse(raw);
         if (parsed && Array.isArray(parsed.habits) && parsed.records && typeof parsed.records === 'object') {
+          if (migrate(parsed)) saveState(parsed);
           return parsed;
         }
       }
