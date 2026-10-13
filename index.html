@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>习惯打卡</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app">
+    <header class="header">
+      <p class="date" id="dateText"></p>
+      <h1 class="title">习惯打卡</h1>
+    </header>
+
+    <section class="stats" aria-label="今日统计">
+      <div class="stat-card stat-primary">
+        <p class="stat-label">今日完成</p>
+        <p class="stat-value"><span id="doneCount">0</span><span class="stat-total">/ <span id="totalCount">0</span></span></p>
+        <div class="progress" aria-hidden="true"><div class="progress-fill" id="progressFill"></div></div>
+      </div>
+      <div class="stat-card">
+        <p class="stat-label">连续打卡</p>
+        <p class="stat-value"><span id="streak">0</span><span class="stat-unit">天</span></p>
+        <p class="stat-hint">连续每天至少完成 1 项</p>
+      </div>
+    </section>
+
+    <form class="add-form" id="addForm">
+      <input class="name-input" id="habitName" type="text" placeholder="添加一个新习惯…" maxlength="30" autocomplete="off">
+      <select class="category-select" id="habitCategory" aria-label="选择分类"></select>
+      <button class="add-btn" type="submit">添加</button>
+    </form>
+
+    <h2 class="section-title">今日打卡</h2>
+    <main class="habit-list" id="habitList"></main>
+
+    <section class="calendar-card" aria-label="回看历史">
+      <h2 class="section-title">回看历史</h2>
+      <div class="calendar-head">
+        <button type="button" class="cal-nav" id="prevMonth" aria-label="上个月">‹</button>
+        <span class="calendar-month" id="monthLabel"></span>
+        <button type="button" class="cal-nav" id="nextMonth" aria-label="下个月">›</button>
+      </div>
+      <div class="calendar-weekdays" aria-hidden="true">
+        <span>日</span><span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span>
+      </div>
+      <div class="calendar-grid" id="calendarGrid"></div>
+      <div class="calendar-detail" id="calendarDetail"></div>
+    </section>
+  </div>
+  <script src="app.js"></script>
+</body>
+</html>
